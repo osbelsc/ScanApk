@@ -60,7 +60,7 @@ _buttonCloud() {
 
 Future<String?> _scanQr() async {
   String? cameraScanResult = await scanner.scan();
-  print(cameraScanResult);
+  print('result ----> $cameraScanResult');
 }
 
 _callPage(int actPage) {
