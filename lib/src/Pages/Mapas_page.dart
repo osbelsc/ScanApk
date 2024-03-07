@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:scannn/src/bloc/scans_bloc.dart';
 import 'package:scannn/src/providers/db_provider.dart';
 
 class MapaPage extends StatelessWidget {
-  const MapaPage({super.key});
-
+  final scansBloc = new ScansBloc();
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ScanModel>>(
-        future: DBProvider.db.getTodosScans(),
+    return StreamBuilder<List<ScanModel>>(
+        stream: scansBloc.scansStream,
         builder:
             (BuildContext context, AsyncSnapshot<List<ScanModel>> snapshot) {
           if (!snapshot.hasData) {
@@ -22,15 +22,24 @@ class MapaPage extends StatelessWidget {
           }
           return ListView.builder(
             itemCount: scans!.length,
-            itemBuilder: (context, i) => ListTile(
-              leading: Icon(
-                Icons.cloud,
-                color: Color.fromARGB(255, 40, 107, 101),
+            itemBuilder: (context, i) => Dismissible(
+              onDismissed: (direction) =>
+                  scansBloc.borrarScan(scans[i].id ?? 0),
+              background: Container(
+                color: Colors.red,
               ),
-              title: Text(scans[i].valor ?? 'Valor predeterminad'),
-              trailing: Icon(
-                Icons.keyboard_arrow_right,
-                color: Color.fromARGB(255, 40, 107, 101),
+              key: UniqueKey(),
+              child: ListTile(
+                leading: Icon(
+                  Icons.cloud,
+                  color: Color.fromARGB(255, 40, 107, 101),
+                ),
+                title: Text(scans[i].valor ?? 'Valor predeterminad'),
+                subtitle: Text("ID: ${scans[i].id ?? 0}"),
+                trailing: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Color.fromARGB(255, 40, 107, 101),
+                ),
               ),
             ),
           );
