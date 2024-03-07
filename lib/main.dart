@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Pages/zpages.dart';
+import 'src/Pages/zpages.dart';
 
 void main() => runApp(const MyApp());
 

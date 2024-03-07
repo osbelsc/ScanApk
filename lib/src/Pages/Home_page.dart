@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:scannn/Pages/zpages.dart';
+import 'package:scannn/src/Pages/zpages.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:scannn/src/providers/db_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -59,8 +60,20 @@ _buttonCloud() {
 }
 
 Future<String?> _scanQr() async {
-  String? cameraScanResult = await scanner.scan();
-  print('result ----> $cameraScanResult');
+  //https://github.com/osbelsc
+  //
+  String? cameraScanResult = "https://github.com/osbelsc";
+  // try {
+  //   cameraScanResult = await scanner.scan();
+  // } catch (e) {
+  //   cameraScanResult = e.toString();
+  // }
+  //
+
+  if (cameraScanResult != null) {
+    final scan = ScanModel(valor: cameraScanResult);
+    DBProvider.db.nuevoScan(scan);
+  }
 }
 
 _callPage(int actPage) {
